@@ -4,18 +4,45 @@ float w=100;
 float h=50;
 float x2=50;
 float y2=150;
+float y3=250;
 float a=0;
 float b=0;
 boolean button1=false;
 boolean button2=false;
-
+boolean button3=false;
 
 void setup() {
-  size(500, 500);
+  size(800, 800);
   background (255);
 }
 
 void draw() {
+  
+   if (button1) {
+      
+      float r=map(sin(a), -1, 1, 10, 80);
+      float co1=map (sin (a*0.05), -1, 1,20,200);
+      float co2=map(sin(a*1.5), -1, 1, 10,60);
+      noStroke();
+      fill(co1,100, co2);
+      ellipse(mouseX, mouseY, r, r);
+      a=a+0.05;
+    }
+
+    if (button2) {
+      stroke(0);
+      fill(255);
+     
+      rect(mouseX,mouseY,20,20);
+    }
+    
+    if (button3) {
+      noStroke();
+      fill(255);
+      rect(0,0,width,height);
+    }
+  
+  
   noStroke();
 
   if (mouseX>x1 &&mouseX<x1+w&& mouseY>y1 &&mouseY<y1+h) {
@@ -31,27 +58,19 @@ void draw() {
     fill(100);
   }
   rect(x2, y2, w, h);
+  
+  
+  if (mouseX>x2 &&mouseX<x2+w&& mouseY>y3 &&mouseY<y3+h) {
+    fill(0);
+  } else {
+    fill(100);
+  }
+  rect(x2, y3, w, h);
 
  // if (mouseX>x2 &&mouseX<x2+w&& mouseY>y2 &&mouseY<y2+h) {
    // button2 =!button2;
 
-    if (button1) {
-      
-      float r=map(sin(a), -1, 1, 10, 80);
-      float co1=map (sin (a*0.05), -1, 1,20, 80);
-      float co2=map(sin(a*1.5), -1, 1, 10, 60);
-      noStroke();
-      fill(co1, 50, co2);
-      ellipse(mouseX, mouseY, r, r);
-      a=a+0.05;
-    }
-
-    if (button2) {
-      stroke(0);
-      fill(255);
-     
-      rect(mouseX,mouseY,20,20);
-    }
+   
   }
 
 
@@ -62,5 +81,8 @@ void mousePressed(){
 
     if (mouseX>x2 &&mouseX<x2+w&& mouseY>y2 &&mouseY<y2+h) {
       button2 =!button2;
+    }
+     if (mouseX>x2 &&mouseX<x2+w&& mouseY>y3 &&mouseY<y3+h) {
+      button3 =!button3;
     }
 }
