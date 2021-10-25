@@ -78,10 +78,12 @@ void draw() {
 void mousePressed(){
     if (mouseX>x1 &&mouseX<x1+w&& mouseY>y1 &&mouseY<y1+h) {
       button1 =!button1;
+      button2=false;
     }
 
     if (mouseX>x2 &&mouseX<x2+w&& mouseY>y2 &&mouseY<y2+h) {
       button2 =!button2;
+      button1=false;
     }
      if (mouseX>x2 &&mouseX<x2+w&& mouseY>y3 &&mouseY<y3+h) {
       button3 =!button3;
