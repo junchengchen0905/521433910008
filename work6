@@ -1,0 +1,113 @@
+ArrayList<Drunkard> movers = new ArrayList<Drunkard>(); 
+ArrayList<Drunkard> sleepers = new ArrayList<Drunkard>();
+
+int maxDrunkards = 500; 
+int iterations = 50;  
+boolean limit = false;
+
+void setup() {
+  size(800, 800);
+  sleepers.add(new Drunkard(width/2, height/2)); 
+  
+  for (int i = 0; i < maxDrunkards; i++) {
+    movers.add(new Drunkard());
+  }
+}
+
+void draw() {
+  background(0);
+  for (Drunkard m : movers) {
+    m.show();
+  }
+  for (Drunkard s : sleepers) {
+    s.show();
+
+    if (s.pos.y >= height*0.75 || s.pos.y <= height*0.25 || s.pos.x >= width*0.75 || s.pos.x<= width*0.25) {
+      limit = true;
+    }
+  }
+
+  for (int n = 0; n < iterations; n++) {
+    for (int i = movers.size() - 1; i > 0; i--) {
+      Drunkard m = movers.get(i);
+      m.walk();
+
+      for (Drunkard s : sleepers) {
+        if (s.checkStuck(m)) {
+          m.stuck = true;
+          sleepers.add(m);
+          movers.remove(i); 
+          break;
+        }
+      }
+    }
+  }
+
+  while (movers.size() < maxDrunkards && limit == false) {
+    movers.add(new Drunkard());
+  }
+}
+
+class Drunkard {
+  PVector pos;
+  PVector vel;
+  boolean stuck;
+  int radius;
+
+  Drunkard() {
+    pos = randomDrunkard();  
+    stuck = false; 
+    radius = 6;  
+  }
+
+  Drunkard(int x, int y) {
+    pos = new PVector(x, y);
+    stuck = true;
+    radius = 6;
+  }
+
+
+    PVector randomDrunkard() {
+    float i = random(4);  
+    PVector p = new PVector();
+    float x = random(width);
+    float y = random(height);
+    if (i <= 1) {  //顶部
+      p = new PVector(x, 0);
+    } else if (i <= 2) {  
+      p = new PVector(x, height);
+    } else if (i <= 3) {  
+      p = new PVector(0, y);
+    } else if (i <= 4) {  
+      p = new PVector(width, y);
+    }
+    return p;
+  }
+
+  void walk() {
+    vel = PVector.random2D(); 
+    pos.add(vel);
+    pos.x = constrain(pos.x, 0, width);
+    pos.y = constrain(pos.y, 0, height);
+  }
+
+  void show() {
+    noStroke();
+    if (stuck) {
+      fill(0, 200, 0);
+    } else {
+      fill(100, 100, 100);
+    }
+    ellipse(pos.x, pos.y, radius * 2, radius * 2);
+  }
+
+  boolean checkStuck(Drunkard dr) {
+    float d = dist(pos.x, pos.y, dr.pos.x, dr.pos.y);
+    if (d < sqrt(radius * dr.radius * 2 * 2)) { 
+      if (random(1) < 0.1) {
+        return true;
+      }
+    }
+    return false;
+  }
+}
